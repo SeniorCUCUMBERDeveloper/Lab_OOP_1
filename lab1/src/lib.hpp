@@ -5,10 +5,10 @@
 #include <string>
 
 
-bool Vowel(const char& symbol);
-bool Rules(const char& symbol);
-std::string func(const std::string &str);
-char* func(char* const& str);
+bool Vowel(const wchar_t& symbol);
+bool Rules(const wchar_t& symbol);
+std::wstring func(const std::wstring &str);
+wchar_t* func(wchar_t* const& str);
 
 
 #endif
