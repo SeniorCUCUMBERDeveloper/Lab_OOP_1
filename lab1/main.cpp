@@ -1,4 +1,5 @@
 #include <iostream>
+#include <locale>
 #include "./src/prog.hpp"
 
 
@@ -11,8 +12,7 @@
 
 
 int main(){
-    system("chcp 1251");
-    setlocale(LC_ALL, "Russian");
+    setlocale(LC_ALL, "");
     try{
         prog();
    }catch(std::runtime_error& error){

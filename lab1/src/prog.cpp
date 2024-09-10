@@ -5,26 +5,26 @@
 
 /**
  * Функция проверки символа на принадлежность к кириллическим.
- * Аргументы символ (const char&) 
+ * Аргументы символ (const wchar_t&) 
  * См. определение в файле prog.cpp 
  */
 
 
-bool Promt(const char& symbol){
-    std::string alphabet = "qQwWeErRtTyYuUiIoOpPaAsSdDfFgGhHjJkKlLzZxXcCvVbBnNmM";
-    return alphabet.find(symbol) != std::string::npos; 
+bool Promt(const wchar_t& symbol){
+    std::wstring alphabet = L"йЙцЦуУкКеЕнНгГшШщЩзЗхХъЪфФыЫвВаАпПрРоОлЛдДжЖэЭяЯчЧсСмМиИтТьЬбБюЮ";
+    return alphabet.find(symbol) != std::wstring::npos; 
 }
 
 
 /**
  * Функция проверки строки; "является ли строка словом".
- * Аргументы  (std::string& str) 
+ * Аргументы  (std::wstring& str) 
  * См. определение в файле prog.cpp 
  */
 
 
-bool isWord(std::string& str){
-    std::for_each(str.begin(), str.end(), [](char& symbol){
+bool isWord(std::wstring& str){
+    std::for_each(str.begin(), str.end(), [](wchar_t& symbol){
         if(!Promt(symbol)){
             throw std::invalid_argument("it's not a word :(");
         }
@@ -35,13 +35,14 @@ bool isWord(std::string& str){
 
 /**
  * Функция проверки массива символов; "является ли смассив словом".
- * Аргументы  (char* const& str) 
+ * Аргументы  (wchar_t* const& str) 
  * См. определение в файле prog.cpp 
  */
 
 
-bool isWord(char* const& str){
-    std::for_each(str, str + strlen(str), [](char& symbol){
+bool isWord(wchar_t* const& str){
+    std::wcout << str[0] << std::endl;
+    std::for_each(str, str + wcslen(str), [](wchar_t& symbol){
         if(!Promt(symbol)){
             throw std::invalid_argument("it's not a word :(");
         }
@@ -51,25 +52,25 @@ bool isWord(char* const& str){
 
 
 /**
- * Функция обработки ввода для char*.
- * Аргументы  (char* &res) 
+ * Функция обработки ввода для wchar_t*.
+ * Аргументы  (wchar_t* &res) 
  * См. определение в файле prog.cpp 
  */
 
 
-bool try_read(char* &res){
-    std::cout << "Input string: ";
-    std::cin.getline(res, 37);
-    if(std::cin.eof()){
+bool try_read(wchar_t* &res){
+    std::wcout << "Input wstring: ";
+    std::wcin.getline(res, 37);
+    if(std::wcin.eof()){
         throw std::runtime_error("end of file :(");
     }
     if(res == nullptr || res[0] == '\0' || !isWord(res)){
         throw std::invalid_argument("empty :(");
     }
-    if(std::cin.good()){
+    if(std::wcin.good()){
         return true;
     }
-    if(std::cin.bad()){
+    if(std::wcin.bad()){
         throw std::runtime_error("critical error read ;)");
     }
     return true;
@@ -77,32 +78,32 @@ bool try_read(char* &res){
 
 
 /**
- * Оберточная функция-процедура для реализации char*. Ввод слова в виде массива символов. Обработка слова и вывод результата.
+ * Оберточная функция-процедура для реализации wchar_t*. Ввод слова в виде массива символов. Обработка слова и вывод результата.
  * Аргументы символ () 
  * См. определение в файле prog.cpp 
  */
 
 
 void ch(){
-    char* str;
+    wchar_t* str;
     bool flag = false;
-    std::cin.ignore();
+    std::wcin.ignore();
     while(flag == false){
         try{
-            str = new char[37];
+            str = new wchar_t[37];
             flag = try_read(str);
         }catch(const std::invalid_argument& e){
             delete[] str;
             std::cerr << "Error: " << e.what() << std::endl;
-            std::cout << "try again" << std::endl;
+            std::wcout << "try again" << std::endl;
             flag = false;
         }catch(const std::runtime_error& error){
             delete[] str;
             throw;
         }
     }
-    char* out = func(str);
-    std::cout << out << std::endl;
+    wchar_t* out = func(str);
+    std::wcout << out << std::endl;
     delete []str;
     delete []out;
 }
@@ -110,26 +111,26 @@ void ch(){
 
 
 /**
- * Функция обработки ввода для std::string &res. Тип bool, на выходе исключение или true
- * Аргументы  (std::string &res) 
+ * Функция обработки ввода для std::wstring &res. Тип bool, на выходе исключение или true
+ * Аргументы  (std::wstring &res) 
  * См. определение в файле prog.cpp 
  */
 
 
-bool try_read(std::string &res){
-    std::cout << "Input string: ";
-    std::getline(std::cin, res);
-    if(std::cin.eof()){
+bool try_read(std::wstring &res){
+    std::wcout << "Input wstring: ";
+    std::getline(std::wcin, res);
+    if(std::wcin.eof()){
         throw std::runtime_error("end of file :(");
     }
     if(res.empty() || res[0] == ' ' || !isWord(res))
     {
         throw std::invalid_argument("empty:(");
     }
-    if(std::cin.good()){
+    if(std::wcin.good()){
         return true;
     }
-    if(std::cin.bad()){
+    if(std::wcin.bad()){
         throw std::runtime_error("critical error read ;)");
     }
     return true;
@@ -137,22 +138,22 @@ bool try_read(std::string &res){
 
 
 /**
- * Функция ввода слова в виде std::string. На выходе возвращает слово или ошибку.
+ * Функция ввода слова в виде std::wstring. На выходе возвращает слово или ошибку.
  * Аргументы ()
  * См. определение в файле prog.cpp 
  */
 
 
-std::string readstr(std::string &str){
-    std::string res;
+std::wstring readstr(std::wstring &str){
+    std::wstring res;
     bool flag = false;
-    std::cin.ignore();
+    std::wcin.ignore();
     while(flag == false){
         try{
             flag = try_read(res);
             }catch(std::invalid_argument& e){
-                std::cout << e.what() << std::endl;
-                std::cout << "try again" << std::endl;
+                std::wcout << e.what() << std::endl;
+                std::wcout << "try again" << std::endl;
                 flag = false;
             }
     }
@@ -161,17 +162,17 @@ std::string readstr(std::string &str){
 
 
 /**
- * Оберточная функция-процедура ввода слова в виде std::string. Обработки слова и вывода результата.
+ * Оберточная функция-процедура ввода слова в виде std::wstring. Обработки слова и вывода результата.
  * Аргументы ()
  * См. определение в файле prog.cpp 
  */
 
 
-void string(){
-    std::string str;
+void wstring(){
+    std::wstring str;
     str = readstr(str);
-    std::string out = func(str);
-    std::cout << out << std::endl;
+    std::wstring out = func(str);
+    std::wcout << out << std::endl;
     return;
 }
 
@@ -185,11 +186,11 @@ void string(){
 
 int menu(){
     int choiсe;
-    std::cout << "0. using string" << std::endl;
-    std::cout << "1. using char*" << std::endl;
-    std::cout << "2. exit" << std::endl;
-    std::cin >> choiсe;
-    if(std::cin.eof()){
+    std::wcout << "0. using wstring" << std::endl;
+    std::wcout << "1. using wchar_t*" << std::endl;
+    std::wcout << "2. exit" << std::endl;
+    std::wcin >> choiсe;
+    if(std::wcin.eof()){
    
         throw std::runtime_error("end of file :(");
     }
@@ -207,7 +208,7 @@ int menu(){
 void prog(){
     int choice;
     std::vector<void (*)()> vec;
-    vec.push_back(string);
+    vec.push_back(wstring);
     vec.push_back(ch);
     do{
         choice =  menu();

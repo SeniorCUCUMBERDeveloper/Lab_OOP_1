@@ -4,47 +4,47 @@
 
 /**
  * Функция проверки на гласные кириллические символы.
- * Аргументы символ (const char&) 
+ * Аргументы символ (const wchar_t&) 
  * См. определение в файле lib.cpp
  */
 
 
-bool Vowel(const char& symbol){
-    std::string alphabet = "AaOoUuYyeEiI";
-    return alphabet.find(symbol) != std::string::npos; 
+bool Vowel(const wchar_t& symbol){
+    std::wstring alphabet = L"аАеЕёЁиИоОуУыЫэЭюЮяЯ";
+    return alphabet.find(symbol) != std::wstring::npos; 
 }
 
 
 /**
  * Функция проверки символа на специальные кириллические символы.
- * Аргументы символ (const char&) 
+ * Аргументы символ (const wchar_t&) 
  * См. определение в файле lib.cpp
  */
 
 
-bool Rules(const char& symbol){
-    std::string alphabet = "bQq";
-    return alphabet.find(symbol) != std::string::npos; 
+bool Rules(const wchar_t& symbol){
+    std::wstring alphabet = L"йЙьЬъЪ";
+    return alphabet.find(symbol) != std::wstring::npos; 
 }
 
 
 /**
- * Функция обработки слова в виде std::string. На выходе получаем std::string слово с разделением на слоги.
- * Аргументы  (const std::string &str) 
+ * Функция обработки слова в виде std::wstring. На выходе получаем std::wstring слово с разделением на слоги.
+ * Аргументы  (const std::wstring &str) 
  * См. определение в файле lib.cpp 
  */
 
 
-std::string func(const std::string &str){
+std::wstring func(const std::wstring &str){
     int first_v = 0;
-    for (char symbol : str) {
+    for (wchar_t symbol : str) {
         if (Vowel(symbol)) {
             break;
         }
         first_v++;
     }
     int cur_pos = 0;
-    std::string result;
+    std::wstring result;
     for (int i = first_v + 1; i < str.size(); ++i) {
         if (Vowel(str[i])) {
             int vowel_1 = first_v, vowel_2 = i;
@@ -65,7 +65,7 @@ std::string func(const std::string &str){
                 }
             }
             result.append(str, cur_pos, seporator - cur_pos);
-            result += "-";
+            result += L"-";
             cur_pos = seporator;
             first_v = i;
         }
@@ -76,16 +76,16 @@ std::string func(const std::string &str){
 
 
 /**
- * Функция обработки слова в виде char* . На выходе получаем char* слово с разделением на слоги.
- * Аргументы  (char* const& str) 
+ * Функция обработки слова в виде wchar_t* . На выходе получаем wchar_t* слово с разделением на слоги.
+ * Аргументы  (wchar_t* const& str) 
  * См. определение в файле lib.cpp 
  */
 
 
-char* func(char* const& str) {
+wchar_t* func(wchar_t* const& str) {
     int first_v = 0;
-    int str_len = strlen(str);
-    char* result = new char[16];
+    int str_len = wcslen(str);
+    wchar_t* result = new wchar_t[16];
     for (int i = 0; i < str_len; ++i) {
         if (Vowel((str)[i])) {
             first_v = i;
@@ -113,7 +113,7 @@ char* func(char* const& str) {
                     separator = vowel_1 + 2;
                 }
             }
-            strncpy(result + result_pos, str + cur_pos, separator - cur_pos);
+            wcsncpy(result + result_pos, str + cur_pos, separator - cur_pos);
             result_pos += separator - cur_pos;
             result[result_pos] = '-';
             result_pos++;
@@ -121,7 +121,7 @@ char* func(char* const& str) {
             first_v = i;
         }
     }
-    strncpy(result + result_pos, str + cur_pos, str_len - cur_pos);
+    wcsncpy(result + result_pos, str + cur_pos, str_len - cur_pos);
     result[result_pos + str_len - cur_pos] = '\0';
     return result;
 }

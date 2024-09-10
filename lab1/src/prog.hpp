@@ -9,14 +9,14 @@
 
 int menu();
 void prog();
-bool Promt(const char& symbol);
-bool isWord(std::string& str);
-bool isWord(char* const& str);
-bool try_read(char* &res);
+bool Promt(const wchar_t& symbol);
+bool isWord(std::wstring& str);
+bool isWord(wchar_t* const& str);
+bool try_read(wchar_t* &res);
 void ch();
-bool try_read(std::string &res);
-std::string  readstr(std::string &res);
-void string();
+bool try_read(std::wstring &res);
+std::wstring  readstr(std::wstring &res);
+void wstring();
 
 
 #endif
